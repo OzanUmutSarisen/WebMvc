@@ -1,0 +1,25 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model WebMvc.Models.Domain.Questions
+
+<form method="post" action="TeacherAddQuestions">
+    <input type="text" class="form-control" asp-for="Id" value="@ViewBag.QuestionId" hidden>
+    <input type="text" class="form-control" asp-for="FK_videoId" value="@ViewBag.VideoId" hidden>
+    <div class="mb-3">
+        <label for="" class="form-label">Question</label>
+        <input type="text" class="form-control" asp-for="quest" value="@Model.quest">
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Answer</label>
+        <input type="text" class="form-control" asp-for="answer" value="@Model.answer">
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Question Time</label>
+        <input type="text" class="form-control" asp-for="questionTime" value="@Model.questionTime">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

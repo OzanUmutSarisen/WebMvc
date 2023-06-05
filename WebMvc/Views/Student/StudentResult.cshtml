@@ -1,0 +1,25 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<WebMvc.Models.StudentViewModels.SVM_Answer>
+
+<table class="table">
+    <thead>
+    <th>Question</th>
+    <th>My Answers</th>
+    <th>True Answer</th>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.quest</td>
+                <td>@item.studentAnswer</td>
+                <td>@item.trueAnswers</td>
+            </tr>
+        }
+
+    </tbody>
+</table>

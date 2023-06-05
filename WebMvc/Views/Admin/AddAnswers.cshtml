@@ -1,0 +1,23 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model WebMvc.Models.Domain.Answers
+<form method="post" action="Addanswers">
+    <input type="text" class="form-control" asp-for="Id" value="@Model.Id" hidden>
+    <div class="mb-3">
+        <label for="" class="form-label">Cevap</label>
+        <input type="text" class="form-control" asp-for="answer" value="@Model.answer">
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Soru seçiniz</label>
+        @Html.DropDownListFor(m=>m.FK_questionId,(List<SelectListItem>)ViewBag.ddl1,new { @class="form-control"})
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Öğrenci seçiniz</label>
+        @Html.DropDownListFor(m=>m.FK_studentId,(List<SelectListItem>)ViewBag.ddl2,new { @class="form-control"})
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

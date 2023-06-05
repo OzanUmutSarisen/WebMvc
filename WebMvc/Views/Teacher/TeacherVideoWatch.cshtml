@@ -1,0 +1,145 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model WebMvc.ViewModels.VM_WatchVideo
+@{
+}
+<div id="answerModel" class="modal">
+    <h1 class="answer-content"></h1>
+</div>
+
+<div class="videoPlayer">
+    <video id="video" class="video" preload="metadata" data-second=15>
+        <source src="../static/@Model.name" type="video/mp4" itemid="videoV" />
+        <source src="../static/ExampleVideo.webm" type="video/webm" />
+        <track default srclang="tr" kind="subtitles" label="english" src="../static/ExampleSubtitle.vtt" />
+    </video>
+</div>
+
+
+<script>
+    const stopTimeArray = [];
+    var questionsArray = [];
+    var questionIdsArray = [];
+    @foreach (var question in Model.Question)
+    {
+        @:stopTimeArray.push(parseInt("@question.questionTime.TotalSeconds"))
+        @:questionsArray.push("@question.quest")
+        @:questionIdsArray.push("@question.Id")
+    }
+
+        const videoPlayer = document.querySelector(".videoPlayer");
+    const video = videoPlayer.querySelector(".video");
+    const video3 = document.getElementById("video")
+    const video2 = videoPlayer.querySelector(".videoV");
+
+
+    var modal = document.getElementById("answerModel");
+    var span = document.getElementsByClassName("answer-content")[0];
+
+    var answersArr = []
+
+    var time = 0.0;
+    var stopperCount = 0;
+
+    var arr = [];
+
+    realTimer = setInterval(Timer, 1000);
+
+    function Timer() {
+        console.log("duration:" + video3.duration)
+        if (time === 0) {
+            video.play();
+        }
+        if (time === stopTimeArray[stopperCount]) {
+            video.pause();
+            modal.style.display = "block";
+            span.innerHTML = "<p>" + questionsArray[stopperCount] + "<label>Answer</label><input type='text' placeholder='Answer' id='answerField' name='array[]' value='' class='cnt'>";
+            console.log("Stop");
+
+        }
+        if (time === stopTimeArray[stopperCount] + 5) {
+            answersArr.push(document.getElementById("answerField").value);
+            $.ajax({
+                data:
+                {
+                    studentAnswer: document.getElementById("answerField").value,
+                    questionId: questionIdsArray[stopperCount],
+                    studentId: "@ViewBag.adminId"
+                },
+                type: 'POST',
+                url: '@Url.Action("TakeAnswer")'
+            })
+            modal.style.display = "none";
+            video.play();
+            time = stopTimeArray[stopperCount] + 1;
+            if (stopperCount !== stopTimeArray.length - 1) {
+                stopperCount++;
+            }
+
+        }
+        if (time > video3.duration + 5) {
+            video.pause();
+            modal.style.display = "block";
+            let size = 0;
+            span.innerHTML = "";
+            while (size < stopperCount) {
+                span.innerHTML = span.innerHTML + "<p type='text' >Answer " + size + " is " + answersArr[size] + " </p>";
+                size++;
+            }
+            span.innerHTML = span.innerHTML + "<form method='post' action='../Crud/Finish'><button type='submit' class='btn btn-primary'>Submit</button></form>";
+            clearInterval(realTimer);
+        }
+        console.log(time);
+        time++;
+    }
+
+</script>
+
+<style>
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+
+    /* Modal Content/Box */
+    .answer-content {
+        background-color: #fefefe;
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; /* Could be more or less, depending on screen size */
+    }
+
+    .result-content {
+        background-color: #fefefe;
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; /* Could be more or less, depending on screen size */
+    }
+
+    .video-player {
+        max-width: 750px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .video {
+        width: 100%;
+    }
+</style>

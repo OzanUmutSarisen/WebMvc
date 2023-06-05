@@ -1,0 +1,19 @@
+﻿
+@{
+}
+@model AddQuestionViewModel
+<form method="post" action="Add"> 
+    <div class="mb-3">
+        <label for="" class="form-label">Question</label>
+        <input type="text" class="form-control" asp-for="quest">
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Answer</label>
+        <input type="text" class="form-control" asp-for="answer">
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Start Time</label>
+        <input type="text" class="form-control" asp-for="startTime">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

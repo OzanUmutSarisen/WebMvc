@@ -1,0 +1,97 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h1>Admin Page</h1>
+<h1>@ViewBag.Id</h1>
+
+<table class="table">
+    <thead>
+        <th>Table Name</th>
+        <th>Action</th>
+    </thead>
+    <tbody> 
+        <tr>
+           <td>
+               faculties
+           </td>
+           <td>
+                <a><input type="submit" onclick="location.href='@Url.Action("faculties")'" value="View" /></a>
+                <a><input type="submit" onclick="location.href='@Url.Action("AddFaculties")'" value="Add" /></a>
+           </td>
+        </tr>
+
+        <tr>
+            <td>
+                departments
+           </td>
+           <td>
+                <a><input type="submit" onclick="location.href='@Url.Action("departments")'" value="View" /></a>
+                <a><input type="submit" onclick="location.href='@Url.Action("adddepartments")'" value="Add" /></a>
+           </td>
+        </tr>
+
+        <tr>
+            <td>
+                students
+            </td>
+            <td>
+                <a><input type="submit" onclick="location.href='@Url.Action("students")'" value="View" /></a>
+                <a><input type="submit" onclick="location.href='@Url.Action("addstudents")'" value="Add" /></a>
+            </td>
+        </tr>
+            
+        <tr>
+            <td>
+                teachers
+            </td>
+            <td>
+                <a><input type="submit" onclick="location.href='@Url.Action("teachers")'" value="View" /></a>
+                <a><input type="submit" onclick="location.href='@Url.Action("addteachers")'" value="Add" /></a>
+            </td>
+        </tr>
+            
+        <tr>
+            <td>
+                courses
+            </td>
+            <td>
+                <a><input type="submit" onclick="location.href='@Url.Action("courses")'" value="View" /></a>
+                <a><input type="submit" onclick="location.href='@Url.Action("addcourses")'" value="Add" /></a>
+            </td>
+        </tr>
+            
+        <tr>
+            <td>
+                videos
+            </td>
+            <td>
+                <a><input type="submit" onclick="location.href='@Url.Action("videos")'" value="View" /></a>
+                <a><input type="submit" onclick="location.href='@Url.Action("addvideos")'" value="Add" /></a>
+            </td>
+        </tr>
+            
+        <tr>
+            <td>
+                questions
+            </td>
+            <td>
+                <a><input type="submit" onclick="location.href='@Url.Action("questions")'" value="View" /></a>
+                <a><input type="submit" onclick="location.href='@Url.Action("addquestions")'" value="Add" /></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                answers
+            </td>
+            <td>
+                <a><input type="submit" onclick="location.href='@Url.Action("answers")'" value="View" /></a>
+                <a><input type="submit" onclick="location.href='@Url.Action("AddAnswers")'" value="Add" /></a>
+            </td>
+        </tr>
+            
+    </tbody>
+</table>
+

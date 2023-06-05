@@ -1,0 +1,25 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<WebMvc.Models.Domain.Courses>
+
+<table class="table">
+    <thead>
+    <th>Derslerin</th>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a class="btn btn-warning btn-sm" href="/Teacher/CourseInfo?id=@item.Id">@item.name</a>
+                    <a class="btn btn-warning btn-sm" href="/Teacher/TeacherAddVideos?id=@item.Id">Add New Video</a>
+                    
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>

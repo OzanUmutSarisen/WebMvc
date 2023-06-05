@@ -1,0 +1,34 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<WebMvc.Models.Domain.Videos>
+
+<table class="table">
+    <thead>
+    <th>Videos</th>
+    <th>Date</th>
+    <th>Link</th>
+    <th>Actions</th>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+                <tr>
+                    <td>@item.name</td>
+                    <td>@item.startTime</td>
+                    <td>https://localhost:5001/student/StudentWatchVideo?id=@item.Id</td>
+                <td>
+                        <a class="btn btn-warning btn-sm" href="/Teacher/TeacherVideoWatch?id=@item.Id">Watch</a>
+                        <a class="btn btn-warning btn-sm" href="/Teacher/TeacherStudentResult?id=@item.Id">Student Results</a>
+                        <a class="btn btn-warning btn-sm" href="/Teacher/TeacherAddVideos?id=@item.Id">ChangeVideosInfos</a>
+                        <a class="btn btn-warning btn-sm" href="/Teacher/TeacherAddQuestions?id=@item.Id">AddNewQuestion</a>
+                        <a class="btn btn-warning btn-sm" href="/Teacher/TeacherVideoQuestions?id=@item.Id">AllQuestions</a>
+                        <a class="btn btn-danger btn-sm" href="/Teacher/TeacherDeleteVideo?id=@item.Id">Delete</a>
+                    </td>
+                </tr>
+        }
+
+    </tbody>
+</table>

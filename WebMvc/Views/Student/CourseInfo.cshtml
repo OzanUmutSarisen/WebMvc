@@ -1,0 +1,27 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<WebMvc.Models.StudentViewModels.SVM_Video>
+
+<table class="table">
+    <thead>
+    <th>Videos</th>
+    <th>My Answers</th>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a class="btn btn-warning btn-sm" href="/student/StudentWatchVideo?id=@item.Id">@item.name</a>
+                </td>
+                <td>
+                    <a class="btn btn-warning btn-sm" href="/student/StudentResult?id=@item.Id">Result</a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
