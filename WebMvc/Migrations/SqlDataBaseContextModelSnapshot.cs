@@ -108,6 +108,12 @@ namespace WebMvc.Migrations
                     b.Property<Guid>("FK_teacherId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("databseFieldId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("databseId")
+                        .HasColumnType("int");
+
                     b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -336,7 +342,7 @@ namespace WebMvc.Migrations
                     b.HasOne("WebMvc.Models.Domain.Teachers", "FK_teacher")
                         .WithMany("FK_course")
                         .HasForeignKey("FK_teacherId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("FK_department");

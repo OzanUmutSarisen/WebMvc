@@ -4,6 +4,8 @@
     {
         public Guid Id { get; set; }
         public string name { get; set; }
+        public int databseId { get; set; }
+        public int databseFieldId { get; set; }
         public Guid FK_teacherId { get; set; }
         public Guid FK_departmentId { get; set; }
         public virtual Teachers FK_teacher { get; set; }

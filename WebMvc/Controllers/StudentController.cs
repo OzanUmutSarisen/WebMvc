@@ -130,11 +130,12 @@ namespace WebMvc.Controllers
 
             var videos = await sqlDataBaseContext.Videos.FindAsync(Id);
             var questions = await sqlDataBaseContext.Questions.Where(x => x.FK_videoId == videos.Id).ToListAsync();
+            var sortedquestionsList = questions.OrderBy(q => q.questionTime).ToList();
 
             var VMIndex = new VM_WatchVideo
             {
                 name = videos.Id.ToString() + ".mp4",
-                Question = questions
+                Question = sortedquestionsList
             };
             return View(VMIndex);
         }

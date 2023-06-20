@@ -1,12 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using MySql.Data.MySqlClient;
 using WebMvc.Data;
 using WebMvc.Funtions;
 using WebMvc.Models.Domain;
 using WebMvc.Models.TeacherViewModels;
 using WebMvc.Models.ViewModels;
 using WebMvc.ViewModels;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using WebMvc.Models;
 
 namespace WebMvc.Controllers
 {
@@ -83,6 +87,7 @@ namespace WebMvc.Controllers
         [HttpPost]
         public async Task<IActionResult> TeacherAddVideos(TVM_Videos videoRequest)
         {
+            Videos video;
             if (videoRequest.Id != new Guid("00000000-0000-0000-0000-000000000000"))
             {
                 var Id = videoRequest.Id;
@@ -96,7 +101,7 @@ namespace WebMvc.Controllers
                     }
                 }
 
-                var video = new Videos()
+                video = new Videos()
                 {
                     Id = Id,
                     name = videoRequest.name,
@@ -120,7 +125,7 @@ namespace WebMvc.Controllers
                     }
                 }
 
-                var video = new Videos()
+                video = new Videos()
                 {
                     Id = Id,
                     name = videoRequest.name,
@@ -129,19 +134,96 @@ namespace WebMvc.Controllers
                     FK_coursesId = videoRequest.FK_coursesId
                 };
 
+                var course = sqlDataBaseContext.Courses.FirstOrDefault(c => c.Id == videoRequest.FK_coursesId);
+
+
+                if (course != null)
+                {
+
+                    string connectionString = "Server=127.0.0.1;Port=3306;Database=moodle_db;user=root;password=;";
+                    int databaseId = 0;
+                    int fieldId = 0;
+
+                    using (MySqlConnection connection = new MySqlConnection(connectionString))
+                    {
+                        connection.Open();
+
+                        string query = "SELECT `id` FROM `mdl_data` WHERE `name`=@courseId;";
+
+                        using (MySqlCommand command = new MySqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@courseId", course.name);
+
+                            databaseId = Convert.ToInt32(command.ExecuteScalar());
+                        }
+
+                        connection.Close();
+                    }
+
+                    if (databaseId > 0)
+                    {
+                        using (MySqlConnection connection = new MySqlConnection(connectionString))
+                        {
+                            connection.Open();
+
+                            string query = "SELECT `id` FROM `mdl_data_fields` WHERE `dataid`=@databaseId;";
+
+                            using (MySqlCommand command = new MySqlCommand(query, connection))
+                            {
+                                command.Parameters.AddWithValue("@databaseId", databaseId);
+
+                                fieldId = Convert.ToInt32(command.ExecuteScalar());
+                            }
+
+                            connection.Close();
+                        }
+
+                        if (fieldId > 0)
+                        {
+                            var url = "http://localhost/moodle/webservice/rest/server.php?wstoken=97c552d00ab0f67506e74b1c7d485892&wsfunction=mod_data_add_entry&databaseid=" + databaseId + "&data[1][fieldid]=" + fieldId + "&data[1][subfield]=0&data[1][value]=\"https://localhost:5001/student/StudentWatchVideo?id="+ Id + "\"";
+
+                            using (var client = new HttpClient())
+                            {
+
+                                var response = await client.PostAsync(url, null);
+
+                                if (response.IsSuccessStatusCode)
+                                {
+                                    var responseContent = await response.Content.ReadAsStringAsync();
+                                    Console.WriteLine("Giriş başarıyla eklendi.");
+                                    Console.WriteLine("Yanıt içeriği: " + responseContent);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Hata oluştu. Yanıt kodu: " + response.StatusCode);
+                                }
+
+                            }
+                        }
+                    }
+                }
+
                 await sqlDataBaseContext.Videos.AddAsync(video);
                 await sqlDataBaseContext.SaveChangesAsync();
-                
             }
-            return Redirect("CourseInfo?Id=" + videoRequest.FK_coursesId);
 
+            return Redirect("TeacherAddQuestions?id=" + video.Id);
         }
 
         [HttpGet]
         public async Task<IActionResult> TeacherAddQuestions()
         {
             Guid Id = new Guid(Request.Query["id"]);
-            if (sqlDataBaseContext.Questions.Where(x => x.Id == Id).FirstOrDefault() != null)
+            ViewBag.VideoId = Id;
+            ViewBag.CourseId = sqlDataBaseContext.Videos.FirstOrDefault(c => c.Id == Id).FK_coursesId;
+
+            string vttData = System.IO.File.ReadAllText("D:\\Users\\ozanu\\source\\repos\\WebMvc\\WebMvc\\wwwroot\\static\\ExampleSubtitle.vtt");
+            var subtitles = teacherFuntions.ParseVttData(vttData);
+
+
+            return View(subtitles);
+
+            /*if (sqlDataBaseContext.Questions.Where(x => x.Id == Id).FirstOrDefault() != null)
             {
                 ViewBag.VideoId = sqlDataBaseContext.Questions.Where(x => x.Id == Id).FirstOrDefault().FK_videoId;
                 ViewBag.QuestionId = Id;
@@ -154,25 +236,25 @@ namespace WebMvc.Controllers
 
             //var data = await sqlDataBaseContext.Questions.FindAsync(new Guid(Id));
 
-            return View(new Questions());
+            return View(new Questions());*/
         }
 
         [HttpPost]
-        public async Task<IActionResult> TeacherAddQuestions(Questions questionRequest)
+        public async Task<IActionResult> TakeTeacherAddQuestions(string sentence, string selectedWord, string time, string videoId)
         {
-            if (questionRequest.Id != null)
+            Questions question = new Questions
             {
-                sqlDataBaseContext.Update(questionRequest);
-                await sqlDataBaseContext.SaveChangesAsync();
-            }
-            else
-            {
-                questionRequest.Id = Guid.NewGuid();
-                await sqlDataBaseContext.Questions.AddAsync(questionRequest);
-                await sqlDataBaseContext.SaveChangesAsync();
-            }
+                Id = Guid.NewGuid(),
+                quest = sentence,
+                answer = selectedWord,
+                questionTime = TimeSpan.Parse(teacherFuntions.AddSecondsToTime(time, 3)),
+                FK_videoId = new Guid(videoId)
+            };
 
-            return Redirect("TeacherVideoQuestions?Id=" + questionRequest.FK_videoId);
+            await sqlDataBaseContext.Questions.AddAsync(question);
+            await sqlDataBaseContext.SaveChangesAsync();
+
+            return Json(new { message = "ok" });
         }
 
         [HttpGet]
@@ -183,11 +265,12 @@ namespace WebMvc.Controllers
 
             var videos = await sqlDataBaseContext.Videos.FindAsync(Id);
             var questions = await sqlDataBaseContext.Questions.Where(x => x.FK_videoId == videos.Id).ToListAsync();
+            var sortedquestionsList = questions.OrderBy(q => q.questionTime).ToList();
 
             var VMIndex = new VM_WatchVideo
             {
                 name = videos.Id.ToString() + ".mp4",
-                Question = questions
+                Question = sortedquestionsList
             };
             return View(VMIndex);
         }

@@ -1,25 +1,71 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@model WebMvc.Models.Domain.Questions
+﻿@model List<WebMvc.Models.TeacherViewModels.TVM_SubSentence>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Word Extraction</title>
+    <style>
+        .word {
+            display: inline-block;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Word Extraction</h1>
+    <div id="sentences">
+        @foreach (var sentence in Model)
+        {
+            <p class="sentence" data-time="@sentence.Time">@sentence.Sentence</p>
+        }
+    </div>
 
-<form method="post" action="TeacherAddQuestions">
-    <input type="text" class="form-control" asp-for="Id" value="@ViewBag.QuestionId" hidden>
-    <input type="text" class="form-control" asp-for="FK_videoId" value="@ViewBag.VideoId" hidden>
-    <div class="mb-3">
-        <label for="" class="form-label">Question</label>
-        <input type="text" class="form-control" asp-for="quest" value="@Model.quest">
-    </div>
-    <div class="mb-3">
-        <label for="" class="form-label">Answer</label>
-        <input type="text" class="form-control" asp-for="answer" value="@Model.answer">
-    </div>
-    <div class="mb-3">
-        <label for="" class="form-label">Question Time</label>
-        <input type="text" class="form-control" asp-for="questionTime" value="@Model.questionTime">
-    </div>
+    <a class="btn btn-warning btn-sm" href="/Teacher/CourseInfo?id=@ViewBag.CourseId">Return</a>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var sentenceElements = document.querySelectorAll('.sentence');
+
+            sentenceElements.forEach(function (sentenceElement) {
+                var sentenceText = sentenceElement.textContent.trim();
+                var time = sentenceElement.dataset.time;
+                var words = sentenceText.split(/\s+/);
+
+                sentenceElement.innerHTML = '';
+
+                words.forEach(function (word) {
+                    var wordElement = document.createElement('span');
+                    wordElement.classList.add('word');
+                    wordElement.textContent = word;
+                    wordElement.addEventListener('click', function () {
+                        var selectedWord = word;
+                        var modifiedSentence = sentenceText.replace(selectedWord, '____________');
+
+                        // AJAX ile sunucuya seçilen kelime ve çıkarılan cümleyi göndermek için yapılması gereken işlemler
+                        $.ajax({
+                            data:
+                            {
+                                sentence: modifiedSentence,
+                                selectedWord: selectedWord,
+                                time: time,
+                                videoId: "@ViewBag.VideoId"
+                            },
+                            type: 'POST',
+                            url: '@Url.Action("TakeTeacherAddQuestions")'
+                        })
+
+
+                        // Bu örnekte, JavaScript konsoluna çıkarılan kelime ve cümleyi yazdırıyoruz
+                        console.log('Selected Word:', selectedWord);
+                        console.log('Modified Sentence:', modifiedSentence);
+                        console.log('Time:', time);
+                    });
+
+                    sentenceElement.appendChild(wordElement);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
