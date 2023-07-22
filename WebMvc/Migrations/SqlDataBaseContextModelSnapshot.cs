@@ -242,6 +242,30 @@ namespace WebMvc.Migrations
                     b.ToTable("Students");
                 });
 
+            modelBuilder.Entity("WebMvc.Models.Domain.Subtitles", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("FK_videoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FK_videoId");
+
+                    b.ToTable("Subtitles");
+                });
+
             modelBuilder.Entity("WebMvc.Models.Domain.Teachers", b =>
                 {
                     b.Property<Guid>("Id")
@@ -400,6 +424,17 @@ namespace WebMvc.Migrations
                         .IsRequired();
 
                     b.Navigation("FK_department");
+                });
+
+            modelBuilder.Entity("WebMvc.Models.Domain.Subtitles", b =>
+                {
+                    b.HasOne("WebMvc.Models.Domain.Videos", "FK_video")
+                        .WithMany()
+                        .HasForeignKey("FK_videoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FK_video");
                 });
 
             modelBuilder.Entity("WebMvc.Models.Domain.Teachers", b =>

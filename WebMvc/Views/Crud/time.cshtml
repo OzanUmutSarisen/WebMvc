@@ -1,70 +1,42 @@
-﻿@model List<WebMvc.Models.TeacherViewModels.TVM_SubSentence>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Word Extraction</title>
-    <style>
-        .word {
-            display: inline-block;
-            cursor: pointer;
-            margin-right: 5px;
-        }
-    </style>
-</head>
-<body>
-    <h1>Word Extraction</h1>
-    <div id="sentences">
-        @foreach (var sentence in Model)
-        {
-            <p class="sentence" data-time="@sentence.Time">@sentence.Sentence</p>
-        }
+﻿@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<h1>Hoş Geldiniz!</h1>
+
+<p>Lütfen kelimelerinizi girin:</p>
+
+<form asp-controller="Crud" asp-action="timepost" method="post">
+    <div id="word-container">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" name="words" />
+            <button type="button" class="btn btn-outline-secondary" onclick="addWord()">Kelime Ekle</button>
+        </div>
     </div>
+    <button type="submit" class="btn btn-primary">Gönder</button>
+</form>
 
-    <a class="btn btn-warning btn-sm" href="/Teacher/CourseInfo?id=@ViewBag.VideoId">Return</a>
-
+@section Scripts {
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var sentenceElements = document.querySelectorAll('.sentence');
+        function addWord() {
+            var container = document.getElementById("word-container");
+            var inputGroup = document.createElement("div");
+            inputGroup.className = "input-group mb-3";
 
-            sentenceElements.forEach(function (sentenceElement) {
-                var sentenceText = sentenceElement.textContent.trim();
-                var time = sentenceElement.dataset.time;
-                var words = sentenceText.split(/\s+/);
+            var input = document.createElement("input");
+            input.type = "text";
+            input.className = "form-control";
+            input.name = "words";
 
-                sentenceElement.innerHTML = '';
+            var button = document.createElement("button");
+            button.type = "button";
+            button.className = "btn btn-outline-secondary";
+            button.innerHTML = "Kelime Ekle";
+            button.onclick = addWord;
 
-                words.forEach(function (word) {
-                    var wordElement = document.createElement('span');
-                    wordElement.classList.add('word');
-                    wordElement.textContent = word;
-                    wordElement.addEventListener('click', function () {
-                        var selectedWord = word;
-                        var modifiedSentence = sentenceText.replace(selectedWord, '____________');
-
-                        // AJAX ile sunucuya seçilen kelime ve çıkarılan cümleyi göndermek için yapılması gereken işlemler
-                        $.ajax({
-                            data:
-                            {
-                                sentence: selectedWord,
-                                selectedWord: modifiedSentence,
-                                time: time
-                            },
-                            type: 'POST',
-                            url: '@Url.Action("timepost")'
-                        })
-
-
-                        // Bu örnekte, JavaScript konsoluna çıkarılan kelime ve cümleyi yazdırıyoruz
-                        console.log('Selected Word:', selectedWord);
-                        console.log('Modified Sentence:', modifiedSentence);
-                        console.log('Time:', time);
-                    });
-
-                    sentenceElement.appendChild(wordElement);
-                });
-            });
-        });
+            inputGroup.appendChild(input);
+            inputGroup.appendChild(button);
+            container.appendChild(inputGroup);
+        }
     </script>
-</body>
-</html>
+}

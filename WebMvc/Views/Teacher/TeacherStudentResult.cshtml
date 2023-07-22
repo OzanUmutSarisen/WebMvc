@@ -5,24 +5,41 @@
 }
 @model List<WebMvc.Models.TeacherViewModels.TVM_StudentResult>
 
-<table class="table">
-    <thead>
-    <th>Student</th>
-    <th>Question</th>
-    <th>Student's Answer</th>
-    <th>True Answer</th>
-    <th>Actions</th>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.studentName</td>
-                <td>@item.question</td>
-                <td>@item.studentAnswer</td>
-                <td>@item.trueAnswer</td>
-            </tr>
-        }
-
-    </tbody>
-</table>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Öğrenci Sonuçları</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Öğrenci Sonuçları</h1>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Student</th>
+                    <th>Question</th>
+                    <th>Student's Answer</th>
+                    <th>True Answer</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.studentName</td>
+                        <td>@item.question</td>
+                        <td>@item.studentAnswer</td>
+                        <td>@item.trueAnswer</td>
+                        <td>
+                            <a class="btn btn-primary btn-sm" href="/Teacher/EditResult?id=@item.Id">Edit</a>
+                            <a class="btn btn-danger btn-sm" href="/Teacher/DeleteResult?id=@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

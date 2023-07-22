@@ -21,6 +21,7 @@ namespace WebMvc.Data
         public virtual DbSet<Accesses> Accesses { get; set; }
         public virtual DbSet<Admin> Admins { get; set; }
         public virtual DbSet<CourseStudent> CoursesStudents { get; set; }
+        public virtual DbSet<Subtitles> Subtitles { get; set; }
         //public virtual DbSet<AccessesTeachers> AccessesTeachers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

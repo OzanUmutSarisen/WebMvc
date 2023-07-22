@@ -11,6 +11,7 @@ using WebMvc.ViewModels;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using WebMvc.Models;
+using System.Linq;
 
 namespace WebMvc.Controllers
 {
@@ -19,6 +20,7 @@ namespace WebMvc.Controllers
         private readonly SqlDataBaseContext sqlDataBaseContext;
         private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment;
         private TeacherFuntions teacherFuntions = new TeacherFuntions();
+
 
         public TeacherController(SqlDataBaseContext sqlDataBaseContext, Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment)
         {
@@ -60,8 +62,9 @@ namespace WebMvc.Controllers
         public async Task<IActionResult> TeacherVideoQuestions()
         {
             var videoId = new Guid(Request.Query["id"]);
-
-            return View(sqlDataBaseContext.Questions.Where(x => x.FK_videoId == videoId).ToList());
+            var questions = sqlDataBaseContext.Questions.Where(x => x.FK_videoId == videoId).ToList();
+            var sortedquestionsList = questions.OrderBy(q => q.questionTime).ToList();
+            return View(sortedquestionsList);
         }
 
         [HttpGet]
@@ -180,7 +183,11 @@ namespace WebMvc.Controllers
 
                         if (fieldId > 0)
                         {
-                            var url = "http://localhost/moodle/webservice/rest/server.php?wstoken=97c552d00ab0f67506e74b1c7d485892&wsfunction=mod_data_add_entry&databaseid=" + databaseId + "&data[1][fieldid]=" + fieldId + "&data[1][subfield]=0&data[1][value]=\"https://localhost:5001/student/StudentWatchVideo?id="+ Id + "\"";
+                            var token = "97c552d00ab0f67506e74b1c7d485892";
+                            var funtion = "mod_data_add_entry";
+                            var connetlinktovideo = "https://localhost:5001";
+
+                            var url = "http://localhost/moodle/webservice/rest/server.php?wstoken="+ token + "&wsfunction="+ funtion + "&databaseid=" + databaseId + "&data[1][fieldid]=" + fieldId + "&data[1][subfield]=0&data[1][value]=\""+connetlinktovideo+"/student/StudentWatchVideo?id=" + Id + "\"";
 
                             using (var client = new HttpClient())
                             {
@@ -215,46 +222,91 @@ namespace WebMvc.Controllers
         {
             Guid Id = new Guid(Request.Query["id"]);
             ViewBag.VideoId = Id;
-            ViewBag.CourseId = sqlDataBaseContext.Videos.FirstOrDefault(c => c.Id == Id).FK_coursesId;
 
-            string vttData = System.IO.File.ReadAllText("D:\\Users\\ozanu\\source\\repos\\WebMvc\\WebMvc\\wwwroot\\static\\ExampleSubtitle.vtt");
-            var subtitles = teacherFuntions.ParseVttData(vttData);
-
-
-            return View(subtitles);
-
-            /*if (sqlDataBaseContext.Questions.Where(x => x.Id == Id).FirstOrDefault() != null)
-            {
-                ViewBag.VideoId = sqlDataBaseContext.Questions.Where(x => x.Id == Id).FirstOrDefault().FK_videoId;
-                ViewBag.QuestionId = Id;
-            }
-            else
-            {
-                ViewBag.QuestionId = new Guid("00000000-0000-0000-0000-000000000000");
-                ViewBag.VideoId = Id;
-            }
-
-            //var data = await sqlDataBaseContext.Questions.FindAsync(new Guid(Id));
-
-            return View(new Questions());*/
+            return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> TakeTeacherAddQuestions(string sentence, string selectedWord, string time, string videoId)
+        public async Task<IActionResult> TeacherAddQuestions(string[] words, string videoId, IFormFile vttFile)
         {
-            Questions question = new Questions
+            if (vttFile == null || vttFile.Length == 0)
             {
-                Id = Guid.NewGuid(),
-                quest = sentence,
-                answer = selectedWord,
-                questionTime = TimeSpan.Parse(teacherFuntions.AddSecondsToTime(time, 3)),
+                // Dosya yüklenmediğinde hata mesajı döndür
+                return BadRequest("Dosya seçilmedi.");
+            }
+
+            Guid Id ;
+            string filePath = "";
+            try
+            {
+                Id = Guid.NewGuid();
+
+                // Yeni bir GUID oluştur
+                string fileName = Id.ToString() + ".vtt";
+
+                // Dosyanın kaydedileceği yol
+                filePath = Path.Combine(_hostingEnvironment.WebRootPath, "static", fileName);
+
+                // Dosyayı kaydet
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    vttFile.CopyTo(stream);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Hata durumunda hata mesajını döndür
+                return StatusCode(500, $"Bir hata oluştu: {ex.Message}");
+            }
+
+            if(sqlDataBaseContext.Subtitles.FirstOrDefault(c => c.FK_videoId == new Guid(videoId)) != null)
+            {
+                sqlDataBaseContext.Subtitles.Remove(sqlDataBaseContext.Subtitles.FirstOrDefault(c => c.FK_videoId == new Guid(videoId)));
+            }
+
+            Subtitles subtitle = new Subtitles(){
+                Id = Id,
+                name = sqlDataBaseContext.Videos.FirstOrDefault(c => c.Id == new Guid(videoId)).name+"Subtitle",
+                location = filePath,
                 FK_videoId = new Guid(videoId)
             };
 
-            await sqlDataBaseContext.Questions.AddAsync(question);
+            await sqlDataBaseContext.Subtitles.AddAsync(subtitle);
             await sqlDataBaseContext.SaveChangesAsync();
 
-            return Json(new { message = "ok" });
+            string vttData = System.IO.File.ReadAllText(filePath);
+            var subtitleLines = teacherFuntions.ParseVttData(vttData);
+
+            List<Questions> questions = new List<Questions>();
+
+            foreach (var word in words)
+            {
+                foreach (var subtitleLine in subtitleLines)
+                {
+                    if (subtitleLine.Sentence.Contains(word) == true)
+                    {
+                        var modifiedSentence = subtitleLine.Sentence.Replace(word, "____________");
+
+                        Questions question = new Questions
+                        {
+                            Id = Guid.NewGuid(),
+                            quest = modifiedSentence,
+                            answer = word,
+                            questionTime = TimeSpan.Parse(teacherFuntions.AddSecondsToTime(subtitleLine.Time, 3)),
+                            FK_videoId = new Guid(videoId)
+                        };
+
+                        questions.Add(question);
+                    }
+
+
+                }
+
+            }
+            await sqlDataBaseContext.Questions.AddRangeAsync(questions);
+            await sqlDataBaseContext.SaveChangesAsync();
+
+            return Redirect("CourseInfo?Id=" + sqlDataBaseContext.Videos.FirstOrDefault(c => c.Id == new Guid(videoId)).FK_coursesId);
         }
 
         [HttpGet]
@@ -270,6 +322,7 @@ namespace WebMvc.Controllers
             var VMIndex = new VM_WatchVideo
             {
                 name = videos.Id.ToString() + ".mp4",
+                subtitleName = sqlDataBaseContext.Subtitles.FirstOrDefault(c => c.FK_videoId == Id).Id.ToString() + ".vtt",
                 Question = sortedquestionsList
             };
             return View(VMIndex);

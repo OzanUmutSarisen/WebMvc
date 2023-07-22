@@ -5,27 +5,39 @@
 }
 @model List<WebMvc.Models.Domain.Questions>
 
-<table class="table">
-    <thead>
-    <th>Question</th>
-    <th>Answer</th>
-    <th>Time</th>
-    <th>Actions</th>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.quest</td>
-                <td>@item.answer</td>
-                <td>@item.questionTime</td>
-                <td>
-                    <a class="btn btn-warning btn-sm" href="/Teacher/TeacherAddQuestions?id=@item.Id">Edit</a>
-                    <a class="btn btn-danger btn-sm" href="/Teacher/TeacherDeleteVideo?id=@item.Id">Delete</a>
-                </td>
-                
-            </tr>
-        }
-
-    </tbody>
-</table>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sorular</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Sorular</h1>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Question</th>
+                    <th>Answer</th>
+                    <th>Time</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.quest</td>
+                        <td>@item.answer</td>
+                        <td>@item.questionTime</td>
+                        <td>
+                            <a class="btn btn-warning btn-sm" href="/Teacher/TeacherAddQuestions?id=@item.Id">Edit</a>
+                            <a class="btn btn-danger btn-sm" href="/Teacher/TeacherDeleteVideo?id=@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

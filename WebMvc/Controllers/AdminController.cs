@@ -532,6 +532,7 @@ namespace WebMvc.Controllers
             var VMIndex = new VM_WatchVideo
             {
                 name = videos.Id.ToString()+".mp4",
+                subtitleName = sqlDataBaseContext.Subtitles.FirstOrDefault(c => c.FK_videoId == Id).Id.ToString() + ".vtt",
                 Question = questions
             };
             return View(VMIndex);

@@ -53,24 +53,25 @@ namespace WebMvc.Funtions
 
                 if (line.StartsWith("00:") && line.Contains("-->"))
                 {
-                    if (!string.IsNullOrEmpty(currentSentence) && !string.IsNullOrEmpty(currentTime))
+                    currentTime = line.Split(new[] { "-->" }, StringSplitOptions.RemoveEmptyEntries)[1].Trim();
+
+                    if (!string.IsNullOrEmpty(currentTime))
                     {
                         TVM_SubSentence subtitle = new TVM_SubSentence
                         {
-                            Sentence = currentSentence,
+                            Sentence = lines[i+1].Trim(),
                             Time = currentTime
                         };
 
                         subtitles.Add(subtitle);
                     }
-
-                    currentTime = line.Split(new[] { "-->" }, StringSplitOptions.RemoveEmptyEntries)[1].Trim();
                     currentSentence = string.Empty;
+
                 }
-                else if (!string.IsNullOrEmpty(line))
+                /*else if (!string.IsNullOrEmpty(line))
                 {
                     currentSentence += line + " ";
-                }
+                }*/
             }
 
             // Son satırın altyazıyı içermesi durumunda eklemeyi unutmamak için kontrol yapılır

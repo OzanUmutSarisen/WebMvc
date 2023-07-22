@@ -23,6 +23,8 @@ using MySqlX.XDevAPI.Common;
 using WebMvc.Models.TeacherViewModels;
 using System.IO;
 using System;
+using System.Xml.Linq;
+using WebMvc.Funtions;
 
 namespace WebMvc.Controllers
 {
@@ -118,84 +120,44 @@ namespace WebMvc.Controllers
 
         public IActionResult time()
         {
-            var Id = new Guid("e13b91f7-6b35-40c5-32af-08db711f33ab");
-            ViewBag.TeacherId = TempData["user"];
-            ViewBag.VideoId = Id;
-
-            string vttData = System.IO.File.ReadAllText("D:\\Users\\ozanu\\source\\repos\\WebMvc\\WebMvc\\wwwroot\\static\\ExampleSubtitle.vtt");
-            var subtitles = ParseVttData(vttData);
-
-
-            return View(subtitles);
+            
+            return View();
         }
+
+        TeacherFuntions teacherFuntions = new TeacherFuntions();
 
         [HttpPost]
-        public IActionResult timepost(string sentence, string selectedWord, string time)
+        public IActionResult timepost(string[] words)
         {
-            var newSentence = new TVM_SelectQuestionWord
+            string vttData = System.IO.File.ReadAllText("D:\\Users\\ozanu\\source\\repos\\WebMvc\\WebMvc\\wwwroot\\static\\ExampleSubtitle.vtt");
+            var subtitles = teacherFuntions.ParseVttData(vttData);
+
+            List<Questions> questions = new List<Questions>();
+
+            foreach (var word in words)
             {
-                Sentence = sentence,
-                SelectedWord = selectedWord,
-                Time = AddSecondsToTime(time, 3)
-            };
-
-            return Json(new { message = "ok" });
-        }
-        public string AddSecondsToTime(string timeString, int seconds)
-        {
-            TimeSpan time = TimeSpan.Parse(timeString);
-            time = time.Add(TimeSpan.FromSeconds(seconds));
-            return time.ToString(@"hh\:mm\:ss\.fff");
-        }
-
-        public static List<TVM_SubSentence> ParseVttData(string vttData)
-        {
-            List<TVM_SubSentence> subtitles = new List<TVM_SubSentence>();
-
-            string[] lines = vttData.Split("\n");
-
-            string currentSentence = string.Empty;
-            string currentTime = string.Empty;
-
-            for (int i = 0; i < lines.Length; i++)
-            {
-                string line = lines[i].Trim();
-
-                if (line.StartsWith("00:") && line.Contains("-->"))
+                foreach (var subtitle in subtitles)
                 {
-                    if (!string.IsNullOrEmpty(currentSentence) && !string.IsNullOrEmpty(currentTime))
+                    if (subtitle.Sentence.Contains(word) == true)
                     {
-                        TVM_SubSentence subtitle = new TVM_SubSentence
+                        var modifiedSentence = subtitle.Sentence.Replace(word, "____________");
+
+                        Questions question = new Questions
                         {
-                            Sentence = currentSentence,
-                            Time = currentTime
+                            Id = Guid.NewGuid(),
+                            quest = modifiedSentence,
+                            answer = word,
+                            questionTime = TimeSpan.Parse(teacherFuntions.AddSecondsToTime(subtitle.Time, 3))
                         };
 
-                        subtitles.Add(subtitle);
+                        questions.Add(question);
                     }
 
-                    currentTime = line.Split(new[] { "-->" }, StringSplitOptions.RemoveEmptyEntries)[1].Trim();
-                    currentSentence = string.Empty;
+
                 }
-                else if (!string.IsNullOrEmpty(line))
-                {
-                    currentSentence += line + " ";
-                }
+
             }
-
-            // Son satırın altyazıyı içermesi durumunda eklemeyi unutmamak için kontrol yapılır
-            if (!string.IsNullOrEmpty(currentSentence) && !string.IsNullOrEmpty(currentTime))
-            {
-                TVM_SubSentence subtitle = new TVM_SubSentence
-                {
-                    Sentence = currentSentence,
-                    Time = currentTime
-                };
-
-                subtitles.Add(subtitle);
-            }
-
-            return subtitles;
+            return View(questions);
         }
 
     }

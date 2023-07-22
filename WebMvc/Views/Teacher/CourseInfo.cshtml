@@ -5,30 +5,45 @@
 }
 @model List<WebMvc.Models.Domain.Videos>
 
-<table class="table">
-    <thead>
-    <th>Videos</th>
-    <th>Date</th>
-    <th>Link</th>
-    <th>Actions</th>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Listesi</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Video Listesi</h1>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
                 <tr>
-                    <td>@item.name</td>
-                    <td>@item.startTime</td>
-                    <td>https://localhost:5001/student/StudentWatchVideo?id=@item.Id</td>
-                <td>
-                        <a class="btn btn-warning btn-sm" href="/Teacher/TeacherVideoWatch?id=@item.Id">Watch</a>
-                        <a class="btn btn-warning btn-sm" href="/Teacher/TeacherStudentResult?id=@item.Id">Student Results</a>
-                        <a class="btn btn-warning btn-sm" href="/Teacher/TeacherAddVideos?id=@item.Id">ChangeVideosInfos</a>
-                        <a class="btn btn-warning btn-sm" href="/Teacher/TeacherAddQuestions?id=@item.Id">AddNewQuestion</a>
-                        <a class="btn btn-warning btn-sm" href="/Teacher/TeacherVideoQuestions?id=@item.Id">AllQuestions</a>
-                        <a class="btn btn-danger btn-sm" href="/Teacher/TeacherDeleteVideo?id=@item.Id">Delete</a>
-                    </td>
+                    <th>Videos</th>
+                    <th>Date</th>
+                    <th>Link</th>
+                    <th>Actions</th>
                 </tr>
-        }
-
-    </tbody>
-</table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.name</td>
+                        <td>@item.startTime</td>
+                        <td>
+                            <a href="https://localhost:5001/student/StudentWatchVideo?id=@item.Id">Video İzle</a>
+                        </td>
+                        <td>
+                            <a class="btn btn-warning btn-sm" href="/Teacher/TeacherVideoWatch?id=@item.Id">İzle</a>
+                            <a class="btn btn-warning btn-sm" href="/Teacher/TeacherStudentResult?id=@item.Id">Öğrenci Sonuçları</a>
+                            <a class="btn btn-warning btn-sm" href="/Teacher/TeacherAddVideos?id=@item.Id">Video Bilgilerini Değiştir</a>
+                            <a class="btn btn-warning btn-sm" href="/Teacher/TeacherAddQuestions?id=@item.Id">Yeni Soru Ekle</a>
+                            <a class="btn btn-warning btn-sm" href="/Teacher/TeacherVideoQuestions?id=@item.Id">Tüm Sorular</a>
+                            <a class="btn btn-danger btn-sm" href="/Teacher/TeacherDeleteVideo?id=@item.Id">Sil</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

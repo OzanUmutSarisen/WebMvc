@@ -1,0 +1,1066 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:02.399
+this is the lesson 8 in the natural
+
+2
+00:00:02.399 --> 00:00:05.460
+language processing course
+
+3
+00:00:05.460 --> 00:00:10.920
+today we talk about lexical similarity
+
+4
+00:00:10.920 --> 00:00:13.740
+outline is as follow
+
+5
+00:00:13.740 --> 00:00:17.279
+first we will start to Define lexical
+
+6
+00:00:17.279 --> 00:00:19.440
+similarity
+
+7
+00:00:19.440 --> 00:00:22.680
+then we will learn three similarity
+
+8
+00:00:22.680 --> 00:00:25.980
+measures levenge time distance jacket
+
+9
+00:00:25.980 --> 00:00:29.580
+index and cosine similarity
+
+10
+00:00:29.580 --> 00:00:33.420
+next three lexical Vector models are
+
+11
+00:00:33.420 --> 00:00:37.520
+examined binary weighting term frequency
+
+12
+00:00:37.520 --> 00:00:40.920
+and tfidf
+
+13
+00:00:40.920 --> 00:00:43.620
+let's start by getting to know the term
+
+14
+00:00:43.620 --> 00:00:46.860
+lexical similarity first
+
+15
+00:00:46.860 --> 00:00:50.160
+lexical similarity is a perspective that
+
+16
+00:00:50.160 --> 00:00:52.800
+focuses on the formal similarity of
+
+17
+00:00:52.800 --> 00:00:55.079
+linguistic items
+
+18
+00:00:55.079 --> 00:00:58.079
+there is no goal of using any semantic
+
+19
+00:00:58.079 --> 00:00:59.760
+details
+
+20
+00:00:59.760 --> 00:01:02.820
+the human brain responds most to visual
+
+21
+00:01:02.820 --> 00:01:04.619
+stimuli
+
+22
+00:01:04.619 --> 00:01:08.460
+therefore lexical similarity still has
+
+23
+00:01:08.460 --> 00:01:11.159
+an important place in text comparison
+
+24
+00:01:11.159 --> 00:01:13.560
+studies as it can provide a quick
+
+25
+00:01:13.560 --> 00:01:16.820
+preliminary information
+
+26
+00:01:16.920 --> 00:01:19.740
+lexical similarity at the word level
+
+27
+00:01:19.740 --> 00:01:22.500
+deals with the character position of the
+
+28
+00:01:22.500 --> 00:01:25.860
+word while semantic similarity considers
+
+29
+00:01:25.860 --> 00:01:28.560
+the conceptual meaning depending on the
+
+30
+00:01:28.560 --> 00:01:30.119
+approach
+
+31
+00:01:30.119 --> 00:01:33.740
+for example the word sample and simple
+
+32
+00:01:33.740 --> 00:01:36.659
+which are shown in the table and are
+
+33
+00:01:36.659 --> 00:01:39.900
+semantically dissimilar are very similar
+
+34
+00:01:39.900 --> 00:01:41.939
+Lexi Cali
+
+35
+00:01:41.939 --> 00:01:45.299
+on the contrary the word sample and
+
+36
+00:01:45.299 --> 00:01:48.659
+instance which are Lexi Cali dissimilar
+
+37
+00:01:48.659 --> 00:01:52.020
+are synonymous to each other
+
+38
+00:01:52.020 --> 00:01:54.540
+although there are many methods in the
+
+39
+00:01:54.540 --> 00:01:57.479
+literature the following three methods
+
+40
+00:01:57.479 --> 00:02:01.500
+are still popular for lexical similarity
+
+41
+00:02:01.500 --> 00:02:04.619
+these are love inch time distance jacket
+
+42
+00:02:04.619 --> 00:02:08.340
+index and cosine similarity
+
+43
+00:02:08.340 --> 00:02:10.500
+here love inch time measures the
+
+44
+00:02:10.500 --> 00:02:13.200
+dissimilarity of the two strings while
+
+45
+00:02:13.200 --> 00:02:16.319
+jacket and cosine measure the similarity
+
+46
+00:02:16.319 --> 00:02:18.620
+of them
+
+47
+00:02:18.620 --> 00:02:21.840
+is a distance metric for measuring the
+
+48
+00:02:21.840 --> 00:02:24.860
+difference between two sequences
+
+49
+00:02:24.860 --> 00:02:28.020
+informally the love inch time distance
+
+50
+00:02:28.020 --> 00:02:30.480
+between two words shows the minimum
+
+51
+00:02:30.480 --> 00:02:32.879
+number of Single Character edits
+
+52
+00:02:32.879 --> 00:02:35.280
+required to change one word into the
+
+53
+00:02:35.280 --> 00:02:36.480
+other
+
+54
+00:02:36.480 --> 00:02:39.959
+in measurement three operations can be
+
+55
+00:02:39.959 --> 00:02:41.340
+used
+
+56
+00:02:41.340 --> 00:02:43.400
+addition a character
+
+57
+00:02:43.400 --> 00:02:46.980
+alternation a character or deletion a
+
+58
+00:02:46.980 --> 00:02:49.140
+character
+
+59
+00:02:49.140 --> 00:02:52.019
+here is an example of how to calculate
+
+60
+00:02:52.019 --> 00:02:54.360
+the levenge time distance between the
+
+61
+00:02:54.360 --> 00:02:56.819
+words Honda and Hyundai
+
+62
+00:02:56.819 --> 00:03:00.660
+if we start changing the word Honda we
+
+63
+00:03:00.660 --> 00:03:03.360
+first need to add a letter Y then
+
+64
+00:03:03.360 --> 00:03:06.239
+convert the letter O to letter U and
+
+65
+00:03:06.239 --> 00:03:08.819
+finally add a letter i to the end of the
+
+66
+00:03:08.819 --> 00:03:10.080
+word
+
+67
+00:03:10.080 --> 00:03:13.560
+because of these three operations their
+
+68
+00:03:13.560 --> 00:03:16.260
+distance to each other is calculated as
+
+69
+00:03:16.260 --> 00:03:18.120
+3.
+
+70
+00:03:18.120 --> 00:03:21.239
+jacket index is a statistic used for
+
+71
+00:03:21.239 --> 00:03:23.340
+comparing the similarity of the
+
+72
+00:03:23.340 --> 00:03:26.220
+diversity of sample sets
+
+73
+00:03:26.220 --> 00:03:28.680
+the jacket coefficient measures
+
+74
+00:03:28.680 --> 00:03:31.860
+similarity between finite sample sets
+
+75
+00:03:31.860 --> 00:03:34.739
+and is defined as the size of the
+
+76
+00:03:34.739 --> 00:03:37.379
+intersection divided by the size of the
+
+77
+00:03:37.379 --> 00:03:40.379
+Union of the sample sets
+
+78
+00:03:40.379 --> 00:03:43.680
+the algorithm of jacket index contains
+
+79
+00:03:43.680 --> 00:03:45.900
+these four steps
+
+80
+00:03:45.900 --> 00:03:49.340
+the first count the number of elements
+
+81
+00:03:49.340 --> 00:03:53.340
+characters or words in intersection of
+
+82
+00:03:53.340 --> 00:03:57.180
+both sets words or texts
+
+83
+00:03:57.180 --> 00:04:00.480
+the second count the number of elements
+
+84
+00:04:00.480 --> 00:04:03.299
+in Union of both sets
+
+85
+00:04:03.299 --> 00:04:06.000
+the third divide the number of
+
+86
+00:04:06.000 --> 00:04:09.420
+intersection by the number of Union
+
+87
+00:04:09.420 --> 00:04:12.840
+and the fourth multiply the number found
+
+88
+00:04:12.840 --> 00:04:15.380
+by 100.
+
+89
+00:04:15.380 --> 00:04:18.298
+cosine's similarity is a function that
+
+90
+00:04:18.298 --> 00:04:20.940
+measures the cosine value of the angle
+
+91
+00:04:20.940 --> 00:04:23.400
+between 2 vectors
+
+92
+00:04:23.400 --> 00:04:26.880
+however in order to measure the cosine
+
+93
+00:04:26.880 --> 00:04:29.940
+similarity of the words it is first
+
+94
+00:04:29.940 --> 00:04:33.660
+necessary to convert them to vectors
+
+95
+00:04:33.660 --> 00:04:36.479
+we talked about semantic word vectors
+
+96
+00:04:36.479 --> 00:04:39.660
+before but since our topic here is
+
+97
+00:04:39.660 --> 00:04:43.320
+lexical similarity we will focus on the
+
+98
+00:04:43.320 --> 00:04:46.259
+lexical Vector models which is an
+
+99
+00:04:46.259 --> 00:04:48.600
+appropriate approach
+
+100
+00:04:48.600 --> 00:04:52.139
+in our previous lessons we talked about
+
+101
+00:04:52.139 --> 00:04:54.720
+the benefits of converting texts to
+
+102
+00:04:54.720 --> 00:04:56.280
+vectors
+
+103
+00:04:56.280 --> 00:05:00.479
+here however we will focus on methods
+
+104
+00:05:00.479 --> 00:05:04.080
+that unlike the previous ones require
+
+105
+00:05:04.080 --> 00:05:08.580
+less material such as a corpus in
+
+106
+00:05:08.580 --> 00:05:10.580
+computation
+
+107
+00:05:10.580 --> 00:05:13.259
+considering the chronological evolution
+
+108
+00:05:13.259 --> 00:05:16.560
+of lexical Vector models the three
+
+109
+00:05:16.560 --> 00:05:19.680
+approaches in order from primitive to
+
+110
+00:05:19.680 --> 00:05:23.220
+complex are as follows
+
+111
+00:05:23.220 --> 00:05:26.699
+first binary waiting
+
+112
+00:05:26.699 --> 00:05:30.360
+second term frequency
+
+113
+00:05:30.360 --> 00:05:33.360
+and finally term frequency inverse
+
+114
+00:05:33.360 --> 00:05:39.180
+document frequency or for short tfidf
+
+115
+00:05:39.539 --> 00:05:42.060
+in binary weighting
+
+116
+00:05:42.060 --> 00:05:45.600
+if a document includes a term the weight
+
+117
+00:05:45.600 --> 00:05:48.259
+of that term for the document is one
+
+118
+00:05:48.259 --> 00:05:50.820
+otherwise zero
+
+119
+00:05:50.820 --> 00:05:53.940
+as an example the following two
+
+120
+00:05:53.940 --> 00:05:56.220
+sentences represent two separate
+
+121
+00:05:56.220 --> 00:05:58.139
+documents
+
+122
+00:05:58.139 --> 00:06:01.500
+first the combination of these two
+
+123
+00:06:01.500 --> 00:06:04.199
+documents is discussed
+
+124
+00:06:04.199 --> 00:06:07.500
+in this example the union set is
+
+125
+00:06:07.500 --> 00:06:10.740
+represented by Bell short for bag of
+
+126
+00:06:10.740 --> 00:06:12.240
+words
+
+127
+00:06:12.240 --> 00:06:14.820
+each document is then vectorized
+
+128
+00:06:14.820 --> 00:06:17.160
+according to whether it contains the
+
+129
+00:06:17.160 --> 00:06:19.080
+term in the Bell
+
+130
+00:06:19.080 --> 00:06:22.199
+in term frequency weighting
+
+131
+00:06:22.199 --> 00:06:25.800
+if a document contains a term the weight
+
+132
+00:06:25.800 --> 00:06:28.199
+of that term for the document is the
+
+133
+00:06:28.199 --> 00:06:30.600
+number of times that term is used in
+
+134
+00:06:30.600 --> 00:06:34.380
+that document 0 otherwise
+
+135
+00:06:34.380 --> 00:06:37.199
+note the variation of the document 1
+
+136
+00:06:37.199 --> 00:06:40.819
+Vector for the same example
+
+137
+00:06:40.819 --> 00:06:44.280
+tfidf is a numerical statistic that is
+
+138
+00:06:44.280 --> 00:06:46.919
+intended to reflect how important a word
+
+139
+00:06:46.919 --> 00:06:49.440
+is to a document in a collection or
+
+140
+00:06:49.440 --> 00:06:51.120
+Corpus
+
+141
+00:06:51.120 --> 00:06:55.020
+the tfidf value increases proportionally
+
+142
+00:06:55.020 --> 00:06:57.960
+to the number of times a word appears in
+
+143
+00:06:57.960 --> 00:07:00.479
+the document and is offset by the number
+
+144
+00:07:00.479 --> 00:07:03.240
+of documents in the Corpus that contain
+
+145
+00:07:03.240 --> 00:07:06.360
+the word which helps to adjust for the
+
+146
+00:07:06.360 --> 00:07:08.460
+fact that some words appear more
+
+147
+00:07:08.460 --> 00:07:10.979
+frequently in general
+
+148
+00:07:10.979 --> 00:07:14.100
+while calculating on the previous sample
+
+149
+00:07:14.100 --> 00:07:16.979
+documents first the term frequency
+
+150
+00:07:16.979 --> 00:07:19.620
+weights are calculated
+
+151
+00:07:19.620 --> 00:07:21.780
+then the weights are normalized
+
+152
+00:07:21.780 --> 00:07:25.860
+according to the TF max value found
+
+153
+00:07:25.860 --> 00:07:30.000
+then IDF calculation is made for each
+
+154
+00:07:30.000 --> 00:07:32.940
+word in the back of words list
+
+155
+00:07:32.940 --> 00:07:35.340
+each word is counted in how many
+
+156
+00:07:35.340 --> 00:07:38.699
+different documents it has been used
+
+157
+00:07:38.699 --> 00:07:41.639
+words in multiple documents have a lower
+
+158
+00:07:41.639 --> 00:07:43.500
+IDF
+
+159
+00:07:43.500 --> 00:07:46.979
+for example the first and the last words
+
+160
+00:07:46.979 --> 00:07:50.280
+for both documents are the same and
+
+161
+00:07:50.280 --> 00:07:53.220
+their IDF values are lower than the all
+
+162
+00:07:53.220 --> 00:07:55.199
+other words
+
+163
+00:07:55.199 --> 00:07:57.900
+TF weight vectors are calculated
+
+164
+00:07:57.900 --> 00:08:01.080
+separately for each document
+
+165
+00:08:01.080 --> 00:08:04.979
+IDF is calculated only for common bag of
+
+166
+00:08:04.979 --> 00:08:06.539
+words
+
+167
+00:08:06.539 --> 00:08:10.440
+in the final step each TF Vector is
+
+168
+00:08:10.440 --> 00:08:13.560
+multiplied by the IDF weight Vector to
+
+169
+00:08:13.560 --> 00:08:16.199
+become the representation Vector of the
+
+170
+00:08:16.199 --> 00:08:17.880
+document
+
+171
+00:08:17.880 --> 00:08:21.419
+in another example let's say that the
+
+172
+00:08:21.419 --> 00:08:24.180
+sentence is D1 and D2 are given to
+
+173
+00:08:24.180 --> 00:08:27.419
+represent two Turkish documents
+
+174
+00:08:27.419 --> 00:08:31.020
+now that we know how the tfidf is
+
+175
+00:08:31.020 --> 00:08:34.260
+calculated our goal here is to find out
+
+176
+00:08:34.260 --> 00:08:36.479
+which of the documents we have most
+
+177
+00:08:36.479 --> 00:08:39.419
+closely resembles a newly arrived queue
+
+178
+00:08:39.419 --> 00:08:40.979
+document
+
+179
+00:08:40.979 --> 00:08:44.520
+as a pre-processing step we will clear
+
+180
+00:08:44.520 --> 00:08:47.220
+the stop words that already have a low
+
+181
+00:08:47.220 --> 00:08:49.680
+IDF value
+
+182
+00:08:49.680 --> 00:08:52.800
+we will first start by calculating the
+
+183
+00:08:52.800 --> 00:08:54.720
+jacket index
+
+184
+00:08:54.720 --> 00:08:58.339
+thus we will be able to compare with
+
+185
+00:08:58.339 --> 00:09:01.440
+tfidf and cosine base similarity
+
+186
+00:09:01.440 --> 00:09:03.480
+calculation
+
+187
+00:09:03.480 --> 00:09:06.540
+here no words were found at the
+
+188
+00:09:06.540 --> 00:09:09.540
+intersection of the Q and D1 documents
+
+189
+00:09:09.540 --> 00:09:12.300
+while two words were found at the
+
+190
+00:09:12.300 --> 00:09:15.300
+intersection of q and d 2.
+
+191
+00:09:15.300 --> 00:09:18.360
+there are 11 words in the combination of
+
+192
+00:09:18.360 --> 00:09:20.580
+the three documents
+
+193
+00:09:20.580 --> 00:09:24.300
+with these calculations it is clear that
+
+194
+00:09:24.300 --> 00:09:28.200
+document Q is more similar to D2
+
+195
+00:09:28.200 --> 00:09:31.740
+on the other hand in order to calculate
+
+196
+00:09:31.740 --> 00:09:35.459
+cosine similarity it is necessary to
+
+197
+00:09:35.459 --> 00:09:39.660
+First calculate criteria such as TF TF
+
+198
+00:09:39.660 --> 00:09:44.339
+Norm IDF and tfidf
+
+199
+00:09:44.339 --> 00:09:48.959
+in the table the calculations of Q D1
+
+200
+00:09:48.959 --> 00:09:53.880
+and D2 documents are made respectively
+
+201
+00:09:53.880 --> 00:09:58.620
+first the Q document was calculated
+
+202
+00:09:58.620 --> 00:10:01.980
+the second the d-1 document was
+
+203
+00:10:01.980 --> 00:10:03.720
+calculated
+
+204
+00:10:03.720 --> 00:10:07.320
+since the IDF row is calculated jointly
+
+205
+00:10:07.320 --> 00:10:10.440
+it remains unchanged in all three
+
+206
+00:10:10.440 --> 00:10:12.660
+documents
+
+207
+00:10:12.660 --> 00:10:16.440
+finally the criteria of the D2 document
+
+208
+00:10:16.440 --> 00:10:18.660
+are calculated
+
+209
+00:10:18.660 --> 00:10:21.480
+note that all of the bag of words in the
+
+210
+00:10:21.480 --> 00:10:24.060
+column labels of the table are in Lemma
+
+211
+00:10:24.060 --> 00:10:25.380
+form
+
+212
+00:10:25.380 --> 00:10:28.680
+it is a great advantage to lametize all
+
+213
+00:10:28.680 --> 00:10:30.720
+the words in the documents to increase
+
+214
+00:10:30.720 --> 00:10:33.540
+the number of matches
+
+215
+00:10:33.540 --> 00:10:36.959
+two similarity values calculated using
+
+216
+00:10:36.959 --> 00:10:41.399
+all tfidf vectors are shown in red
+
+217
+00:10:41.399 --> 00:10:44.640
+just as in the jacket index the
+
+218
+00:10:44.640 --> 00:10:48.420
+similarity of Q and D2 is higher
+
+219
+00:10:48.420 --> 00:10:52.079
+however when the calculated values are
+
+220
+00:10:52.079 --> 00:10:54.959
+compared the value found by the
+
+221
+00:10:54.959 --> 00:10:58.920
+similarity of tfidf and cosine seems to
+
+222
+00:10:58.920 --> 00:11:01.980
+be stronger than that of jacket
+
+223
+00:11:01.980 --> 00:11:04.680
+lexical Vector models have some
+
+224
+00:11:04.680 --> 00:11:07.620
+disadvantages as well as advantages such
+
+225
+00:11:07.620 --> 00:11:11.880
+as fast computation easy adaptation to
+
+226
+00:11:11.880 --> 00:11:14.880
+small corpora and clarity
+
+227
+00:11:14.880 --> 00:11:17.880
+perhaps the most significant drawback is
+
+228
+00:11:17.880 --> 00:11:20.579
+the large Vector sizes that cannot be
+
+229
+00:11:20.579 --> 00:11:22.260
+adjusted
+
+230
+00:11:22.260 --> 00:11:27.180
+for example a corpus was created with 62
+
+231
+00:11:27.180 --> 00:11:29.760
+000 reviews from a website containing
+
+232
+00:11:29.760 --> 00:11:33.860
+reviews of IMDb movie reviews
+
+233
+00:11:33.860 --> 00:11:37.140
+approximately 160
+
+234
+00:11:37.140 --> 00:11:39.720
+000 words were identified in the bag of
+
+235
+00:11:39.720 --> 00:11:42.060
+words of this Corpus
+
+236
+00:11:42.060 --> 00:11:46.140
+the tfidf vectors to be calculated in
+
+237
+00:11:46.140 --> 00:11:49.680
+such a corpus will have 160
+
+238
+00:11:49.680 --> 00:11:51.740
+000 dimensions
+
+239
+00:11:51.740 --> 00:11:54.420
+considering that each cell of the vector
+
+240
+00:11:54.420 --> 00:11:58.260
+will be 4 bytes approximately 37
+
+241
+00:11:58.260 --> 00:12:00.899
+gigabytes of free memory will be needed
+
+242
+00:12:00.899 --> 00:12:03.240
+for all comments
+
+243
+00:12:03.240 --> 00:12:05.760
+this is an inefficient approach to
+
+244
+00:12:05.760 --> 00:12:07.860
+memory usage
+
+245
+00:12:07.860 --> 00:12:11.640
+if so describe any other problems you
+
+246
+00:12:11.640 --> 00:12:12.959
+notice
+
+247
+00:12:12.959 --> 00:12:16.860
+is there a problem special to Turkish
+
+248
+00:12:16.860 --> 00:12:20.760
+next let's discuss how we can get rid of
+
+249
+00:12:20.760 --> 00:12:23.339
+these disadvantages
+
+250
+00:12:23.339 --> 00:12:25.860
+please indicate your opinions on this
+
+251
+00:12:25.860 --> 00:12:28.019
+subject by relating them to other
+
+252
+00:12:28.019 --> 00:12:30.360
+subjects you have learned within the
+
+253
+00:12:30.360 --> 00:12:32.700
+scope of NLP
+
+254
+00:12:32.700 --> 00:12:34.920
+we have seen that the love inch time
+
+255
+00:12:34.920 --> 00:12:37.440
+distance method is a very successful
+
+256
+00:12:37.440 --> 00:12:40.560
+method for comparing words
+
+257
+00:12:40.560 --> 00:12:43.079
+but it was not mentioned in lexical
+
+258
+00:12:43.079 --> 00:12:45.180
+Vector models
+
+259
+00:12:45.180 --> 00:12:48.240
+could there be a reason for this
+
+260
+00:12:48.240 --> 00:12:51.180
+or can we measure document similarities
+
+261
+00:12:51.180 --> 00:12:54.600
+by using levenge time distance
+
+262
+00:12:54.600 --> 00:12:59.279
+if your answer is yes how can we do it
+
+263
+00:12:59.279 --> 00:13:02.519
+if you say no why
+
+264
+00:13:02.519 --> 00:13:04.620
+that's all
+
+265
+00:13:04.620 --> 00:13:07.019
+please write your summary about the
+
+266
+00:13:07.019 --> 00:13:09.380
+lesson
+

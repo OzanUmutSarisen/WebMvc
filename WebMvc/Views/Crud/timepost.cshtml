@@ -1,12 +1,12 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Extracted Sentence</title>
-</head>
-<body>
-    <h1>Extracted Sentence</h1>
-    <p>Selected Word: @ViewBag.SelectedWord</p>
-    <p>Modified Sentence: @ViewBag.ModifiedSentence</p>
-</body>
-</html>
+﻿@model List<WebMvc.Models.Domain.Questions>
+
+<h1>Sonuç Sayfası</h1>
+
+<p>İşlem tamamlandı.</p>
+
+@foreach (var sentence in Model)
+{
+    <p>@sentence.quest</p>
+    <p>@sentence.answer</p>
+    <p>@sentence.questionTime</p>
+}

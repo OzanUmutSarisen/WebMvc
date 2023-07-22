@@ -4,23 +4,36 @@
 @{
 }
 @model WebMvc.Models.TeacherViewModels.TVM_Videos
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Ekle</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Video Ekle</h1>
+        <form method="post" action="TeacherAddVideos" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Id" value="@ViewBag.VideoId">
+            <input type="hidden" asp-for="FK_coursesId" value="@ViewBag.CourseId">
 
-<form method="post" action="TeacherAddVideos" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+            </div>
 
-    <input type="text" class="form-control" asp-for="Id" value="@ViewBag.VideoId" hidden>
-    <input type="text" class="form-control" asp-for="FK_coursesId" value="@ViewBag.CourseId" hidden>
-    <div class="mb-3">
-        <label for="" class="form-label">Name</label>
-        <input type="text" class="form-control" asp-for="name">
-    </div>
-    <div class="mb-3">
-        <label for="" class="form-label">Videonuzu ekleyiniz</label>
-        <input type="file" class="form-control" asp-for="video">
-    </div>
-    <div class="mb-3">
-        <label for="" class="form-label">Start Time</label>
-        <input type="text" class="form-control" asp-for="startTime">
-    </div>
+            <div class="form-group">
+                <label for="video">Videonuzu ekleyiniz</label>
+                <input type="file" class="form-control-file" id="video" name="video">
+            </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+            <div class="form-group">
+                <label for="startTime">Start Time</label>
+                <input type="text" class="form-control" id="startTime" name="startTime" placeholder="Start Time">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
